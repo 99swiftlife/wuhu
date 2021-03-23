@@ -25,9 +25,9 @@ struct node
         if (this->contain("send"))
         {
             int temid = content.find(",", 0);
-            if (content.find("(", temid + 1) != content.npos) //Èç¹û´øÀ¨ºÅÓĞ¶à¸ö²ÎÊı
+            if (content.find("(", temid + 1) != content.npos) //å¦‚æœå¸¦æ‹¬å·æœ‰å¤šä¸ªå‚æ•°
             {
-                int temid2 = content.find("(", temid + 1); //"("µÄÏÂ±ê
+                int temid2 = content.find("(", temid + 1); //"("çš„ä¸‹æ ‡
                 string param = content.substr(temid2 + 1, content.find(")", temid2 + 1) - temid2 - 1);
                 while (param.find(",", 0) != param.npos)
                 {
@@ -47,7 +47,7 @@ struct node
         {
             int temid = content.find("<-", 0);
             string param = content.substr(0, temid);
-            if (param.find(",", 0) != param.npos) //ÓĞ¶à¸ö¶ººÅ·Ö¸ôµÄ²ÎÊı
+            if (param.find(",", 0) != param.npos) //æœ‰å¤šä¸ªé€—å·åˆ†éš”çš„å‚æ•°
             {
                 while (param.find(",", 0) != param.npos)
                 {
@@ -63,17 +63,17 @@ struct node
         return ans;
     }
 };
-vector<node> P;           //´æ´¢ËùÓĞ²ÎÓëÕßµÄÓïÁÏ
-vector<int> start_index;  //Ã¿¸ö²ÎÓëÕßÓïÁÏµÄÆğÊ¼ÏÂ±ê
-vector<int> par_position; //Ã¿¸ö²ÎÓëÕßÓïÁÏµ±Ç°¶ÁÈ¡µ½µÄÏÂ±ê
-vector<bool> ismulti;     //±êÊ¶Ã¿¸ö²ÎÓëÕßÊÇ·ñÓĞ¶à¸ö
-vector<string> par_name;  //²ÎÓëÕßÃû
+vector<node> P;           //å­˜å‚¨æ‰€æœ‰å‚ä¸è€…çš„è¯­æ–™
+vector<int> start_index;  //æ¯ä¸ªå‚ä¸è€…è¯­æ–™çš„èµ·å§‹ä¸‹æ ‡
+vector<int> par_position; //æ¯ä¸ªå‚ä¸è€…è¯­æ–™å½“å‰è¯»å–åˆ°çš„ä¸‹æ ‡
+vector<bool> ismulti;     //æ ‡è¯†æ¯ä¸ªå‚ä¸è€…æ˜¯å¦æœ‰å¤šä¸ª
+vector<string> par_name;  //å‚ä¸è€…å
 int stid = -1;
-bool iserror = false; //±êÊ¶ÓïÁÏÊäÈëÊÇ·ñÓĞ´íÎó
-string lasstore = ""; //´æ´¢ÉÏÒ»´ÎreceiveÄÚÈİµÄ±äÁ¿
+bool iserror = false; //æ ‡è¯†è¯­æ–™è¾“å…¥æ˜¯å¦æœ‰é”™è¯¯
+string lasstore = ""; //å­˜å‚¨ä¸Šä¸€æ¬¡receiveå†…å®¹çš„å˜é‡
 stack<string> Loopstmt;
-map<string, int> mp;     //µü´ú±äÁ¿ºÍµü´ú¼¯ºÏ±àºÅÓ³Éä
-int participate_num = 0; //²ÎÓëÕßÊıÁ¿
+map<string, int> mp;     //è¿­ä»£å˜é‡å’Œè¿­ä»£é›†åˆç¼–å·æ˜ å°„
+int participate_num = 0; //å‚ä¸è€…æ•°é‡
 vector<string> result;
 stack<int> emptyid;
 map<int, int> dep;
@@ -82,7 +82,7 @@ bool is_in_Loop = 0;
 vector<string> lasrecv;
 stack<int> lasbegincnt;
 int firstSenderId;
-bool transform; //ÊÇ·ñĞèÒª×ª»¯³É¸³Öµ
+bool transform; //æ˜¯å¦éœ€è¦è½¬åŒ–æˆèµ‹å€¼
 
 bool cmp(string A, string B)
 {
@@ -109,7 +109,7 @@ void link(int parid)
     int sid = par_position[parid];
     if (sid >= start_index[parid + 1])
         return;
-    //ÕÒµ½µ±Ç°²ÎÓëÕßÖĞµÄsendÓï¾ä
+    //æ‰¾åˆ°å½“å‰å‚ä¸è€…ä¸­çš„sendè¯­å¥
     while (sid < start_index[parid + 1] && P[sid].contain("send") == 0)
         sid++;
     //cout<<"&&&&&&&&&&"<<start_index[parid+1]<<endl;
@@ -117,12 +117,12 @@ void link(int parid)
     if (sid >= start_index[parid + 1])
         return;
 
-    //ÕÒµ½¸ÃsendÓï¾äµÄ·¢ËÍÄ¿±ê
+    //æ‰¾åˆ°è¯¥sendè¯­å¥çš„å‘é€ç›®æ ‡
     int destination = P[sid].to;
     //cout<<"destination: "<<destination<<endl;
     par_position[parid] = sid + 1;
     int rid = par_position[destination];
-    //ÕÒµ½sendÓï¾ä¶ÔÓ¦µÄreceiveÓï¾ä
+    //æ‰¾åˆ°sendè¯­å¥å¯¹åº”çš„receiveè¯­å¥
     while (rid < start_index[destination + 1] && P[rid].contain("receive") == 0)
         rid++;
     //cout<<"####"<<rid<<endl;
@@ -133,10 +133,10 @@ void link(int parid)
         iserror = 1;
         return;
     }
-    //Á¬½Ó
+    //è¿æ¥
     P[sid].nex = rid;
 
-    //ÉÏ´«reciveÓï¾äµÄÑ­»·Í·ÖÁsend
+    //ä¸Šä¼ reciveè¯­å¥çš„å¾ªç¯å¤´è‡³send
     if (P[rid].begincnt && ismulti[destination])
     {
         P[sid].begincnt += P[rid].begincnt;
@@ -145,13 +145,13 @@ void link(int parid)
 
     if (ismulti[parid])
     {
-        //ÏÂ´«sendÓï¾äµÄÑ­»·Î²
+        //ä¸‹ä¼ sendè¯­å¥çš„å¾ªç¯å°¾
         int temrid = rid;
         while (temrid < start_index[destination + 1] && P[temrid].contain("send") == 0 && P[temrid].endcontent.size() == 0 && P[temrid].begincnt == 0)
             temrid++;
         if (temrid >= start_index[destination + 1] || P[temrid].contain("send") || P[temrid].begincnt && temrid > rid)
             temrid--;
-        //cout<<"ÏÂ´«ÖÁ"<<temrid<<endl;
+        //cout<<"ä¸‹ä¼ è‡³"<<temrid<<endl;
         P[temrid].endcontent.insert(P[temrid].endcontent.begin(), P[sid].endcontent.begin(), P[sid].endcontent.end());
         P[sid].endcontent.clear();
     }
@@ -242,7 +242,7 @@ void transformToAssignment(int stid)
             }
             for (int i = 0; i < sz1; ++i)
             {
-                //cout<<"sendµÄ²ÎÊı£º"<<sendpar[i]<<" recvµÄ²ÎÊı "<<recvpar[i]<<endl;
+                //cout<<"sendçš„å‚æ•°ï¼š"<<sendpar[i]<<" recvçš„å‚æ•° "<<recvpar[i]<<endl;
                 string ass = recvpar[i] + " = " + sendpar[i];
                 result.push_back(ass);
             }
@@ -351,9 +351,9 @@ int findTheFirstSender()
             }
             if (P[j].contain("receive"))
             {
-                if (flag) //³öÏÖSSRRÇé¿ö
+                if (flag) //å‡ºç°SSRRæƒ…å†µ
                 {
-                    //SSRR¾ÀÕı´¦Àí
+                    //SSRRçº æ­£å¤„ç†
                     int endid = start_index[i + 1] - 1;
                     int temj = j - start_index[i];
                     while (temj--)
@@ -367,7 +367,7 @@ int findTheFirstSender()
                     {
                         P[T].nex = T + 1;
                     }
-                    //SSRR´¦Àí½áÊø
+                    //SSRRå¤„ç†ç»“æŸ
                 }
                 break;
             }
@@ -376,7 +376,7 @@ int findTheFirstSender()
     if (id == -1)
     {
         iserror = true;
-        puts("Can not find the first sender!"); //Ã»ÓĞµÚÒ»¸ö·¢ËÍµÄ²ÎÓëÕß
+        puts("Can not find the first sender!"); //æ²¡æœ‰ç¬¬ä¸€ä¸ªå‘é€çš„å‚ä¸è€…
     }
     return id;
 }
@@ -449,18 +449,18 @@ void solve()
 int main()
 {
     bool badcase1 = 0;
-    //½¨Í¼
+    //å»ºå›¾
     string mc, nc;
-    //ÊäÈë²ÎÓëÕßÊıÁ¿
+    //è¾“å…¥å‚ä¸è€…æ•°é‡
     cin >> participate_num;
-    //ÊäÈë²ÎÓëÕßÃû
+    //è¾“å…¥å‚ä¸è€…å
     par_name.resize(participate_num);
     ismulti.resize(participate_num);
     for (auto &it : par_name)
         cin >> it;
-    //ÊäÈëÓïÁÏ
+    //è¾“å…¥è¯­æ–™
     int lasto = -1;
-    int loopheadnum = 0; //Ñ­»·Í·Êı
+    int loopheadnum = 0; //å¾ªç¯å¤´æ•°
     while (cin >> mc)
     {
         if (mc == "||" || start_index.size() == 0)
@@ -572,38 +572,38 @@ int main()
         P.push_back(newm);
     }
     start_index.push_back(P.size());
-    //¼ÇÂ¼ÔËĞĞÊ±¼ä
+    //è®°å½•è¿è¡Œæ—¶é—´
     clock_t start, finish;
     start = clock();
-    //´®ÁªÓï¾ä²¢×ª»¯³É¸³Öµ
+    //ä¸²è”è¯­å¥å¹¶è½¬åŒ–æˆèµ‹å€¼
     solve();
-    //ÓĞ´íÎó
+    //æœ‰é”™è¯¯
     if (iserror)
     {
         if (badcase1)
             puts("Error:Communicate with different qs in Q in one iteration!");
     }
     else
-    { //Êä³ö×ª»¯Ç°½á¹û
+    { //è¾“å‡ºè½¬åŒ–å‰ç»“æœ
         output();
         result.clear();
         puts("");
         puts("Output After Transform:");
         transformToAssignment(start_index[firstSenderId]);
-        //Êä³ö×ª»¯ºó½á¹û
+        //è¾“å‡ºè½¬åŒ–åç»“æœ
         output();
     }
     finish = clock();
     double duration = (double)(finish - start) / CLOCKS_PER_SEC;
     printf("%lf seconds\n", duration);
 }
-////ÕÒµ½µÚÒ»¸ö·¢ËÍÓï¾äµÄ²ÎÓëÕß
-// Algorithm1 findTheFirstSender(Participant{Gp, Gqj, ..})
+////éªŒè¯æ˜¯å¦å‡ºç°å¼‚å¸¸
+// Algorithm1 Valid(Participant{Gp, Gqj, ..})
 // {
 //     for each G in Gp
 //           for each instr in G's{instr1,instr2..instrn}
 //              if isSend(instr)
-//                  if isInLoop && instr.target!=lasRecv.from   //ÔÚÍ¬Ò»Ñ­»·ÖĞÓë²»Í¬¶ÔÏó½»Á÷
+//                  if isInLoop && instr.target!=lasRecv.from   //åœ¨åŒä¸€å¾ªç¯ä¸­ä¸ä¸åŒå¯¹è±¡äº¤æµ
 //                      Throw_Error2("Communicate with different qs in Q in one iteration!")
 //                  end if
 //              end if
@@ -627,12 +627,12 @@ int main()
 // 		end for
 // 	end for
 // }
-////´®ÁªÓï¾ä²¢´¦Àí°ü
-// Algorithm2 Link(G)//´«Èë²ÎÊı£º²ÎÓëÕß
+////ä¸²è”è¯­å¥å¹¶å¤„ç†åŒ…
+// Algorithm2 Link(G)//ä¼ å…¥å‚æ•°ï¼šå‚ä¸è€…
 // {
-// 	S=G.findNextSend()//ÕÒµ½ÏÂÒ»¸ösendÓï¾ä
-// 	tgt=S.getTarget()//»ñÈ¡¸ÃsendÓï¾äµÄ·¢ËÍÄ¿±ê
-// 	R=tgt.findNextReceive()//ÕÒµ½ÏÂÒ»¸öreceiveÓï¾ä
+// 	S=G.findNextSend()//æ‰¾åˆ°ä¸‹ä¸€ä¸ªsendè¯­å¥
+// 	tgt=S.getTarget()//è·å–è¯¥sendè¯­å¥çš„å‘é€ç›®æ ‡
+// 	R=tgt.findNextReceive()//æ‰¾åˆ°ä¸‹ä¸€ä¸ªreceiveè¯­å¥
 // 	if msg(S)=msg(R)
 // 		S.nex=R
 // 		if S.AtomicBlock!=null
@@ -642,17 +642,17 @@ int main()
 // 			R.AtomicBlock U S
 // 		end if
 // 	end if
-// 	Link(tgt)//µİ¹éµ÷ÓÃ
+// 	Link(tgt)//é€’å½’è°ƒç”¨
 // }
-////°ÑsendºÍreceive×ª»¯³ÉÏàÓ¦µÄ¸³ÖµÓï¾ä
-// Algorithm3 transformToAssignment(instr) //´«Èë²ÎÊı£ºµÚÒ»ÌõÓï¾ä
+////æŠŠsendå’Œreceiveè½¬åŒ–æˆç›¸åº”çš„èµ‹å€¼è¯­å¥
+// Algorithm3 transformToAssignment(instr) //ä¼ å…¥å‚æ•°ï¼šç¬¬ä¸€æ¡è¯­å¥
 // {
-//     while (hasNext(instr))//hasNext(instr)±íÊ¾µ±Ç°Óï¾äÊÇ·ñÓĞºó¼ÌÓï¾ä£¬¼´ÊÇ·ñÊÇ×îºóÒ»¾äÓï¾ä
+//     while (hasNext(instr))//hasNext(instr)è¡¨ç¤ºå½“å‰è¯­å¥æ˜¯å¦æœ‰åç»§è¯­å¥ï¼Œå³æ˜¯å¦æ˜¯æœ€åä¸€å¥è¯­å¥
 //     {
 //         if isSend (instr)
-//             paramS=instr.getparam()//»ñÈ¡sendÓï¾ä·¢ËÍµÄÄÚÈİ
-//     			paramR=instr.nex.getparam()//»ñÈ¡receiveÓï¾äÖĞ´æ´¢sendÄÚÈİ±äÁ¿
-//     			½«sendºÍreceive×ª»¯³É¸³ÖµÓï¾ä
+//             paramS=instr.getparam()//è·å–sendè¯­å¥å‘é€çš„å†…å®¹
+//     			paramR=instr.nex.getparam()//è·å–receiveè¯­å¥ä¸­å­˜å‚¨sendå†…å®¹å˜é‡
+//     			å°†sendå’Œreceiveè½¬åŒ–æˆèµ‹å€¼è¯­å¥
 //              for each ps in paramS , pr in paramR
 //     				result U instr(ps=pr)
 //     			end for

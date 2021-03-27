@@ -6,5 +6,5 @@ You can also find the converted examples directly in the output folder. </br>
 
 ## Use duet to verify the c program:
 In the computer equipped with duet software (Linux operating system), start the system terminal under the duet folder and enter the command:</br>
-./duet.native -proofspace <c file relative path></br>
+./duet.native -proofspace &lt;c file relative path &gt;</br>
 You can get the verification result</br>
